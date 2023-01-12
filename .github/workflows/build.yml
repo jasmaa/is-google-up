@@ -5,6 +5,8 @@ name: Build
 #     - cron: '0 * * * *'
 
 on: push
+permissions:
+  contents: write
 
 jobs:
   build:
