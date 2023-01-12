@@ -23,6 +23,8 @@ def main():
     html = generate_html(report)
     with open("build/index.html", "w") as f:
         f.write(html)
+    with open("build/.nojekyll", "w") as f:
+        pass
 
 
 if __name__ == "__main__":
