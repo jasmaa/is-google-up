@@ -4,9 +4,6 @@ on:
   schedule:
     - cron: '0 * * * *'
 
-permissions:
-  contents: write
-
 jobs:
   build:
     name: Build site
@@ -29,8 +26,9 @@ jobs:
         run: python build_site.py
 
       - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@4.1.4
+        uses: netlify/actions/cli@master
         with:
-          branch: gh-pages
-          folder: build
-          single-commit: true
+          args: deploy --dir=build
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
