@@ -1,29 +1,39 @@
+from pathlib import Path
+import shutil
 import json
 from datetime import datetime
+from jinja2 import Environment, PackageLoader, select_autoescape
+
+BUILD_DIR = "build"
 
 
-def generate_html(report):
-    html = "<html>"
-    html += "<style>table, th, td { border: 1px solid black; }</style>"
-    html += "<body>"
-    html += "<table>"
-    html += "<tr><th>Name</th><th>Status</th><th>Latency (ms)</th></tr>"
-    for site in report["sites"]:
-        html += f"<tr><td><a href=\"{site['url']}\">{site['name']}</a></td><td>{site['code']}</td><td>{site['latency']}</td></tr>"
-    html += "</table>"
-    html += f"<p><em>Last generated at: {datetime.fromtimestamp(report['created_at'] / 1000)}</em></p>"
-    html += "</body>"
-    html += "</html>"
-    return html
+def code2category(code):
+    return f"{int(code / 100)}xx"
 
 
 def main():
-    with open("build/report.json")as f:
+    with open(Path(BUILD_DIR, "report.json"))as f:
         report = json.load(f)
-    html = generate_html(report)
-    with open("build/index.html", "w") as f:
+
+    env = Environment(
+        loader=PackageLoader("build_site"),
+        autoescape=select_autoescape()
+    )
+
+    template = env.get_template("index.html")
+    html = template.render(
+        verdict="Yes" if all(
+            [site.get("code") == 200 for site in report["sites"]]) else "No",
+        sites=report["sites"],
+        last_modified=datetime.fromtimestamp(report['created_at'] / 1000),
+        code2category=code2category,
+    )
+    with open(Path(BUILD_DIR, "index.html"), "w") as f:
         f.write(html)
-    with open("build/.nojekyll", "w") as f:
+
+    shutil.copy2('style.css', BUILD_DIR)
+
+    with open(Path(BUILD_DIR, ".nojekyll"), "w") as f:
         pass
 
 

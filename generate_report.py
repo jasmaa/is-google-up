@@ -27,7 +27,7 @@ def main():
         "name": s["name"],
         "url": s["url"],
         "code": r["code"],
-        "latency": r["latency"].total_seconds() * 1000
+        "latency": round(r["latency"].total_seconds() * 1000, 3)
     } for s, r in zip(SITES, ping_results)]
     now = datetime.datetime.now().timestamp() * 1000
     report = {

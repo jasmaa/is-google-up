@@ -1,0 +1,54 @@
+table, th, td {
+  border: 1px solid black;
+}
+
+th, td {
+  padding: 0.5em;
+}
+
+.main-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.card {
+  display: flex;
+  border-radius: 0.5em;
+  background-color: pink;
+  padding: 2em;
+}
+
+.big-text {
+  font-size: 10em;
+}
+
+.dot {
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  background-color: pink;
+}
+
+.dot.status-1xx {
+  background-color: gray;
+}
+
+.dot.status-2xx {
+  background-color: lime;
+}
+
+.dot.status-3xx {
+  background-color: skyblue;
+}
+
+.dot.status-4xx {
+  background-color: yellow;
+}
+
+.dot.status-5xx {
+  background-color: red;
+}
