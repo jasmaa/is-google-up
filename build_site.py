@@ -1,10 +1,14 @@
+import os
 from pathlib import Path
 import shutil
 import json
 from datetime import datetime
+import dotenv
 from jinja2 import Environment, PackageLoader, select_autoescape
 
-BUILD_DIR = "build"
+dotenv.load_dotenv()
+
+BUILD_DIR = os.environ.get("BUILD_DIR", "build")
 
 
 def code2category(code):

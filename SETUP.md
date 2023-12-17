@@ -4,7 +4,11 @@
 
 ### Create Netlify site
 
-Go to Netlify and create a site.
+Create Netlify site and copy your site's URL. This will be `NETLIFY_SITE`.
+
+Generate a Netlify [personal access
+token](https://app.netlify.com/user/applications#personal-access-tokens). This
+value will be `NETLIFY_AUTH_TOKEN`.
 
 ### Install depedendencies
 
@@ -12,19 +16,17 @@ Go to Netlify and create a site.
 pip3 install -r "requirements.txt"
 ```
 
-```
-npm install netlify-cli -g
-```
-
 ### Bootstrap script
 
-Bootstrap script with:
+```
+Create `.env` from `sample.env` and fill with correct values.
+```
+
+Test script with:
 
 ```
 cd /<PATH>/<TO>/<REPO> && ./run.sh
 ```
-
-You will have to login to Netlify and select the site on first run.
 
 ### Set up cronjob
 
