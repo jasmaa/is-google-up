@@ -1,29 +1,26 @@
-import os
 from pathlib import Path
 import shutil
 import json
 from datetime import datetime
-import dotenv
+import logging
 from jinja2 import Environment, PackageLoader, select_autoescape
-
-dotenv.load_dotenv()
-
-BUILD_DIR = os.environ.get("BUILD_DIR", "build")
-
 
 def code2category(code):
     return f"{int(code / 100)}xx"
 
 
-def main():
-    with open(Path(BUILD_DIR, "report.json"))as f:
+def build_site(report_dir, build_dir):
+    logging.info("Building site...")
+    logging.info("Loading report...")
+    with open(Path(report_dir, "report.json"))as f:
         report = json.load(f)
 
     env = Environment(
-        loader=PackageLoader("build_site"),
+        loader=PackageLoader("site_builder"),
         autoescape=select_autoescape()
     )
 
+    logging.info("Writing site artifacts...")
     template = env.get_template("index.html")
     html = template.render(
         verdict="Yes" if all(
@@ -32,14 +29,12 @@ def main():
         last_modified=datetime.fromtimestamp(report['created_at'] / 1000),
         code2category=code2category,
     )
-    with open(Path(BUILD_DIR, "index.html"), "w") as f:
+    with open(Path(build_dir, "index.html"), "w") as f:
         f.write(html)
 
-    shutil.copy2('style.css', BUILD_DIR)
+    shutil.copy2('style.css', build_dir)
 
-    with open(Path(BUILD_DIR, ".nojekyll"), "w") as f:
+    with open(Path(build_dir, ".nojekyll"), "w") as f:
         pass
 
-
-if __name__ == "__main__":
-    main()
+    logging.info("Finished building site.")
