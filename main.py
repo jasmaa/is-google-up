@@ -6,7 +6,11 @@ from report_generator import generate_report
 from site_uploader import netlify_upload
 
 if __name__ == "__main__":
-    logging.getLogger().setLevel(logging.INFO)
+    logging.basicConfig(
+        format='%(asctime)s %(levelname)-8s %(message)s',
+        level=logging.INFO,
+        datefmt='%Y-%m-%d %H:%M:%S'
+    )
     dotenv.load_dotenv()
 
     BUILD_DIR = os.environ.get("BUILD_DIR", "build")
